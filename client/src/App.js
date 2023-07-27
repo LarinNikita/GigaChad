@@ -5,6 +5,8 @@ import ThemeProvider from './theme';
 // components
 import ThemeSettings from './components/settings';
 
+import "./index.css"
+
 function App() {
   return (
     <ThemeProvider>
