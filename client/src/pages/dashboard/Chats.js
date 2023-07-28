@@ -7,6 +7,8 @@ import { ChatList } from "../../data"
 
 import { SimpleBarStyle } from '../../components/Scrollbar';
 
+import { Scrollbars } from 'react-custom-scrollbars-2';
+
 const StyledBadge = styled(Badge)(({ theme }) => ({
     '& .MuiBadge-badge': {
         backgroundColor: '#44b700',
@@ -124,12 +126,11 @@ const Chats = () => {
             backgroundColor: theme.palette.mode === "light" ? "#f8faff" : theme.palette.background.paper,
             boxShadow: "0 0 2px rgba(0, 0, 0, 0.25)"
         }}>
-            <Stack spacing={2} sx={{ height: "100vh" }}>
+            <Stack spacing={2} sx={{ height: "100vh" }} p={2}>
                 <Stack
                     direction="row"
                     alignItems="center"
                     justifyContent="space-between"
-                    sx={{ padding: "24px 24px 0 24px" }}
                 >
                     <Typography variant="h5">
                         Chats
@@ -138,7 +139,7 @@ const Chats = () => {
                         <CircleDashed />
                     </IconButton>
                 </Stack>
-                <Stack sx={{ width: "100%", padding: "0px 24px 0px 24px" }}>
+                <Stack sx={{ width: "100%" }}>
                     <Search>
                         <SearchIconWrapper>
                             <MagnifyingGlass color="#709ce6" />
@@ -146,7 +147,7 @@ const Chats = () => {
                         <StyledInputBase placeholder="Search..." />
                     </Search>
                 </Stack>
-                <Stack spacing={1} sx={{ padding: "0px 24px 0 24px" }}>
+                <Stack spacing={1}>
                     <Stack
                         direction="row"
                         alignItems="center"
@@ -157,35 +158,30 @@ const Chats = () => {
                     </Stack>
                     <Divider />
                 </Stack>
-                <Stack
-                    spacing={2}
-                    direction="column"
-                    sx={{
-                        flexGrow: 1,
-                        overflowX: "auto",
-                        height: "100%",
-                        padding: "0 12px 24px 24px"
-                    }}
-                >
-                    {/* <SimpleBarStyle timeout={500} clickOnTrack={false}> */}
-                    <Stack spacing={2.4}>
-                        <Typography variant="subtitle2" sx={{ color: "#676767" }}>
-                            Pinned
-                        </Typography>
-                        {ChatList.filter((el) => el.pinned).map((el) => {
-                            return <ChatElement {...el} />
-                        })}
+                <Scrollbars autoHide autoHideTimeout={500} autoHideDuration={100} >
+                    <Stack
+                        spacing={2}
+                        direction="column"
+                        sx={{ flexGrow: 1 }}
+                    >
+                        <Stack spacing={2.4}>
+                            <Typography variant="subtitle2" sx={{ color: "#676767" }}>
+                                Pinned
+                            </Typography>
+                            {ChatList.filter((el) => el.pinned).map((el) => {
+                                return <ChatElement {...el} />
+                            })}
+                        </Stack>
+                        <Stack spacing={2.4}>
+                            <Typography variant="subtitle2" sx={{ color: "#676767" }}>
+                                All Chats
+                            </Typography>
+                            {ChatList.filter((el) => !el.pinned).map((el) => {
+                                return <ChatElement {...el} />
+                            })}
+                        </Stack>
                     </Stack>
-                    <Stack spacing={2.4}>
-                        <Typography variant="subtitle2" sx={{ color: "#676767" }}>
-                            All Chats
-                        </Typography>
-                        {ChatList.filter((el) => !el.pinned).map((el) => {
-                            return <ChatElement {...el} />
-                        })}
-                    </Stack>
-                    {/* </SimpleBarStyle> */}
-                </Stack>
+                </Scrollbars>
             </Stack>
         </Box>
     )

@@ -5,7 +5,7 @@ import ThemeProvider from './theme';
 // components
 import ThemeSettings from './components/settings';
 
-import "./index.css"
+import "./reset.css"
 
 function App() {
   return (
