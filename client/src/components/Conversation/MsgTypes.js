@@ -23,7 +23,7 @@ const TimeLine = ({ el }) => {
     )
 };
 
-const TextMsg = ({ el }) => {
+const TextMsg = ({ el, menu }) => {
 
     const theme = useTheme();
 
@@ -47,12 +47,12 @@ const TextMsg = ({ el }) => {
                     {el.message}
                 </Typography>
             </Box>
-            <MsgOptions />
+            {menu && <MsgOptions />}
         </Stack>
     )
 };
 
-const MediaMsg = ({ el }) => {
+const MediaMsg = ({ el, menu }) => {
 
     const theme = useTheme();
 
@@ -86,12 +86,12 @@ const MediaMsg = ({ el }) => {
                     </Typography>
                 </Stack>
             </Box>
-            <MsgOptions />
+            {menu && <MsgOptions />}
         </Stack>
     )
 };
 
-const ReplytMsg = ({ el }) => {
+const ReplytMsg = ({ el, menu }) => {
 
     const theme = useTheme();
 
@@ -131,12 +131,12 @@ const ReplytMsg = ({ el }) => {
                     </Typography>
                 </Stack>
             </Box>
-            <MsgOptions />
+            {menu && <MsgOptions />}
         </Stack>
     )
 };
 
-const LinkMsg = ({ el }) => {
+const LinkMsg = ({ el, menu }) => {
 
     const theme = useTheme();
 
@@ -190,12 +190,12 @@ const LinkMsg = ({ el }) => {
                     </Stack>
                 </Stack>
             </Box>
-            <MsgOptions />
+            {menu && <MsgOptions />}
         </Stack>
     )
 };
 
-const DocMsg = ({ el }) => {
+const DocMsg = ({ el, menu }) => {
 
     const theme = useTheme();
 
@@ -237,7 +237,7 @@ const DocMsg = ({ el }) => {
                     </Typography>
                 </Stack>
             </Box>
-            <MsgOptions />
+            {menu && <MsgOptions />}
         </Stack>
     )
 };

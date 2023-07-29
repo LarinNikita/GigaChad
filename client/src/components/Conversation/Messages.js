@@ -5,7 +5,7 @@ import { DocMsg, LinkMsg, MediaMsg, ReplytMsg, TextMsg, TimeLine } from './MsgTy
 
 import { Chat_History } from "../../data";
 
-const Messages = () => {
+const Messages = ({ menu }) => {
     return (
         <Box p={3}>
             <Stack spacing={3}>
@@ -16,18 +16,18 @@ const Messages = () => {
                         case "msg":
                             switch (el.subtype) {
                                 case "img":
-                                    return <MediaMsg el={el} />;
+                                    return <MediaMsg el={el} menu={menu} />;
                                 case "doc":
-                                    return <DocMsg el={el} />;
+                                    return <DocMsg el={el} menu={menu} />;
 
                                 case "link":
-                                    return <LinkMsg el={el} />
+                                    return <LinkMsg el={el} menu={menu} />
 
                                 case "reply":
-                                    return <ReplytMsg el={el} />
+                                    return <ReplytMsg el={el} menu={menu} />
 
                                 default:
-                                    return <TextMsg el={el} />;
+                                    return <TextMsg el={el} menu={menu} />;
                             }
                             break;
 

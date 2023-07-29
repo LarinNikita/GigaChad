@@ -13,7 +13,7 @@ const Conversation = () => {
             <Header />
             <Scrollbars autoHide autoHideTimeout={500} autoHideDuration={100}>
                 <Box width="100%" sx={{ flexGrow: 1, height: "100%" }}>
-                    <Messages />
+                    <Messages menu={true}/>
                 </Box>
             </Scrollbars>
             <Footer />
