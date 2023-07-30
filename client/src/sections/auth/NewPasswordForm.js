@@ -15,23 +15,28 @@ import {
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
-const LoginForm = () => {
+const NewPasswordForm = () => {
   const [showPassword, setShowPassword] = useState(false);
 
-  const LoginShema = Yup.object().shape({
-    email: Yup.string()
-      .required("Email is required")
-      .email("Email must be a valid address"),
-    password: Yup.string().required("Password is required").min(8).max(16),
+  const NewPasswordFormShema = Yup.object().shape({
+    newPassword: Yup.string()
+      .required("Password is required")
+      .min(8, "Password must be at least 8 characters")
+      .max(16),
+    confirmPassword: Yup.string()
+      .required("Password is required")
+      .min(8, "Password must be at least 8 characters")
+      .max(16)
+      .oneOf([Yup.ref("newPassword"), null], "Password must match"),
   });
 
   const defaultValues = {
-    email: "test@test.ru",
-    password: "1qaz!QAZ",
+    newPassword: "",
+    confirmPassword: "",
   };
 
   const methods = useForm({
-    resolver: yupResolver(LoginShema),
+    resolver: yupResolver(NewPasswordFormShema),
     defaultValues,
   });
 
@@ -61,10 +66,10 @@ const LoginForm = () => {
         {!!errors.afterSubmit && (
           <Alert severity="error">{errors.afterSubmit.message}</Alert>
         )}
-        <InputForm name="email" label="Email address" />
+
         <InputForm
-          name="password"
-          label="Password"
+          name="newPassword"
+          label="New Password"
           type={showPassword ? "text" : "password"}
           InputProps={{
             endAdornment: (
@@ -76,40 +81,42 @@ const LoginForm = () => {
             ),
           }}
         />
-      </Stack>
-      <Stack alignItems="flex-end" sx={{ my: 2 }}>
-        <Link
-          component={RouterLink}
-          to="/auth/reset-password"
-          variant="body2"
+        <InputForm
+          name="confirmPassword"
+          label="Confirm Password"
+          type={showPassword ? "text" : "password"}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment>
+                <IconButton onClick={() => setShowPassword(!showPassword)}>
+                  {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+        <Button
+          fullWidth
           color="inherit"
-          underline="always"
-          sx={{ cursor: "pointer" }}
-        >
-          Forgot Password?
-        </Link>
-      </Stack>
-      <Button
-        fullWidth
-        color="inherit"
-        size="large"
-        type="submit"
-        variant="contained"
-        sx={{
-          bgcolor: "text.primary",
-          color: (theme) =>
-            theme.palette.mode === "light" ? "common.white" : "grey.800",
-          "&:hover": {
+          size="large"
+          type="submit"
+          variant="contained"
+          sx={{
             bgcolor: "text.primary",
             color: (theme) =>
               theme.palette.mode === "light" ? "common.white" : "grey.800",
-          },
-        }}
-      >
-        Login
-      </Button>
+            "&:hover": {
+              bgcolor: "text.primary",
+              color: (theme) =>
+                theme.palette.mode === "light" ? "common.white" : "grey.800",
+            },
+          }}
+        >
+          Submit
+        </Button>
+      </Stack>
     </FormProvider>
   );
 };
 
-export default LoginForm;
+export default NewPasswordForm;

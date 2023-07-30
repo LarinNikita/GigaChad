@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
 import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -15,10 +14,12 @@ import {
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
-const LoginForm = () => {
+const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
 
-  const LoginShema = Yup.object().shape({
+  const RegisterShema = Yup.object().shape({
+    firstName: Yup.string("First Name is required").min(2),
+    lastName: Yup.string("Last Name is required").min(2),
     email: Yup.string()
       .required("Email is required")
       .email("Email must be a valid address"),
@@ -26,12 +27,14 @@ const LoginForm = () => {
   });
 
   const defaultValues = {
+    firstName: "Vasiya",
+    lastName: "Pupkin",
     email: "test@test.ru",
     password: "1qaz!QAZ",
   };
 
   const methods = useForm({
-    resolver: yupResolver(LoginShema),
+    resolver: yupResolver(RegisterShema),
     defaultValues,
   });
 
@@ -61,7 +64,11 @@ const LoginForm = () => {
         {!!errors.afterSubmit && (
           <Alert severity="error">{errors.afterSubmit.message}</Alert>
         )}
-        <InputForm name="email" label="Email address" />
+        <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+          <InputForm name="firstName" label="First Name" />
+          <InputForm name="lastName" label="Last Name" />
+        </Stack>
+        <InputForm name="email" label="Email" />
         <InputForm
           name="password"
           label="Password"
@@ -76,40 +83,28 @@ const LoginForm = () => {
             ),
           }}
         />
-      </Stack>
-      <Stack alignItems="flex-end" sx={{ my: 2 }}>
-        <Link
-          component={RouterLink}
-          to="/auth/reset-password"
-          variant="body2"
+        <Button
+          fullWidth
           color="inherit"
-          underline="always"
-          sx={{ cursor: "pointer" }}
-        >
-          Forgot Password?
-        </Link>
-      </Stack>
-      <Button
-        fullWidth
-        color="inherit"
-        size="large"
-        type="submit"
-        variant="contained"
-        sx={{
-          bgcolor: "text.primary",
-          color: (theme) =>
-            theme.palette.mode === "light" ? "common.white" : "grey.800",
-          "&:hover": {
+          size="large"
+          type="submit"
+          variant="contained"
+          sx={{
             bgcolor: "text.primary",
             color: (theme) =>
               theme.palette.mode === "light" ? "common.white" : "grey.800",
-          },
-        }}
-      >
-        Login
-      </Button>
+            "&:hover": {
+              bgcolor: "text.primary",
+              color: (theme) =>
+                theme.palette.mode === "light" ? "common.white" : "grey.800",
+            },
+          }}
+        >
+          Create Account
+        </Button>
+      </Stack>
     </FormProvider>
   );
 };
 
-export default LoginForm;
+export default RegisterForm;
