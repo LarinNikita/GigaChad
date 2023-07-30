@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Avatar,
   Box,
@@ -18,8 +19,39 @@ import useSettings from "../../hooks/useSettings";
 import { Nav_Buttons, Profile_Menu } from "../../data";
 import { faker } from "@faker-js/faker";
 
+const getPath = (index) => {
+  switch (index) {
+    case 0:
+      return "/app";
+    case 1:
+      return "/group";
+    case 2:
+      return "/call";
+    case 3:
+      return "/settings";
+
+    default:
+      break;
+  }
+};
+
+const getMenuPath = (index) => {
+  switch (index) {
+    case 0:
+      return "/profile";
+    case 1:
+      return "/settings";
+    case 2:
+      return "/auth/login";
+
+    default:
+      break;
+  }
+};
+
 const SideBar = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
 
   const [selected, setSelected] = useState(0);
   const [anchorEl, setAnchorEl] = useState();
@@ -85,7 +117,10 @@ const SideBar = () => {
               ) : (
                 <Box p={1}>
                   <IconButton
-                    onClick={() => setSelected(el.index)}
+                    onClick={() => {
+                      setSelected(el.index);
+                      navigate(getPath(el.index));
+                    }}
                     sx={{
                       width: "max-content",
                       color:
@@ -121,7 +156,10 @@ const SideBar = () => {
             ) : (
               <Box p={1}>
                 <IconButton
-                  onClick={() => setSelected(3)}
+                  onClick={() => {
+                    setSelected(3);
+                    navigate(getPath(3));
+                  }}
                   sx={{
                     width: "max-content",
                     color:
@@ -164,9 +202,16 @@ const SideBar = () => {
             }}
           >
             <Stack spacing={1} px={1}>
-              {Profile_Menu.map((item) => (
-                <MenuItem onClick={handleClick}>
+              {Profile_Menu.map((item, index) => (
+                <MenuItem
+                  onClick={() => {
+                    handleClick();
+                  }}
+                >
                   <Stack
+                    onClick={() => {
+                      navigate(getMenuPath(index));
+                    }}
                     sx={{ width: 100 }}
                     direction="row"
                     alignItems="center"

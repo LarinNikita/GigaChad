@@ -1,9 +1,15 @@
 import React from "react";
 import { Box, Container, useTheme } from "@mui/material";
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
+
+const isAuth = true;
 
 const MainLayout = () => {
   const theme = useTheme();
+  if (isAuth) {
+    return <Navigate to="/app" />;
+  }
+
   return (
     <Box
       sx={{

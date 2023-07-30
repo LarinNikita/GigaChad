@@ -26,7 +26,7 @@ const CallLogElement = ({
   time,
   unread,
   online,
-  iscoming,
+  incoming,
   missed,
 }) => {
   const theme = useTheme();
@@ -59,7 +59,7 @@ const CallLogElement = ({
           <Stack spacing={0.3}>
             <Typography variant="subtitle2">{name}</Typography>
             <Stack direction="row" alignItems="center" spacing={1}>
-              {iscoming ? (
+              {incoming ? (
                 <ArrowDownLeft color={missed ? "#D45E6C" : "#76D45E"} />
               ) : (
                 <ArrowUpRight color={missed ? "#D45E6C" : "#76D45E"} />
