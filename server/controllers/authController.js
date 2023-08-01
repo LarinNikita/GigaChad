@@ -6,6 +6,7 @@ const filterObj = require("../utils/filterObj");
 const { promisify } = require("util");
 const mailService = require("../services/mailer");
 const dotenv = require("dotenv");
+const otpHTML = require("../templates/Mail/OTP");
 
 dotenv.config({ path: "./config.env" });
 
@@ -66,8 +67,9 @@ exports.sendOTP = async (req, res, next) => {
   mailService.sendEmail({
     from: process.env.NODEMAILER_USER,
     recipient: user.email,
-    subject: "OTP for chat",
-    text: `Your OTP is ${new_otp}. This valid for 10 Mins.`,
+    subject: "OTP for GigaChat",
+    // text: `Your OTP is ${new_otp}. This valid for 10 Mins.`,
+    html: otpHTML(user.firstName, new_otp)
   });
   // .then(() => {
 
