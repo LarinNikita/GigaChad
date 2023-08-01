@@ -1,18 +1,24 @@
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { Link, Stack, Typography } from "@mui/material";
+import { Box, Link, Stack, Typography } from "@mui/material";
 import { CaretLeft } from "phosphor-react";
 import ResetPasswordForm from "../../sections/auth/ResetPasswordForm";
+import Logo from "../../assets/Images/Logo.ico";
 
 const ResetPassword = () => {
   return (
     <Stack spacing={2} sx={{ mb: 5, position: "relative" }}>
-      <Typography variant="h3" paragraph>
-        Forgot your Password?
-      </Typography>
+      <Stack direction="row" alignItems="center" spacing={1}>
+        <Box sx={{ width: 36, height: 36 }}>
+          <img style={{ maxHeight: "36px" }} src={Logo} alt="GigaChat" />
+        </Box>
+        <Typography variant="h3" paragraph>
+          Forgot your Password?
+        </Typography>
+      </Stack>
       <Typography sx={{ color: "text.secondary", mb: 5 }}>
         Please enter the email address associated with уоur account and Wе will
-        email уои а link to reset уоur password.
+        email уоu a link to reset уоur password.
       </Typography>
 
       <ResetPasswordForm />

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   Avatar,
@@ -18,6 +19,9 @@ import useSettings from "../../hooks/useSettings";
 
 import { Nav_Buttons, Profile_Menu } from "../../data";
 import { faker } from "@faker-js/faker";
+
+import Logo from "../../assets/Images/Logo.ico";
+import { LogoutUser } from "../../redux/slices/auth";
 
 const getPath = (index) => {
   switch (index) {
@@ -50,6 +54,7 @@ const getMenuPath = (index) => {
 };
 
 const SideBar = () => {
+  const dispatch = useDispatch();
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -87,6 +92,16 @@ const SideBar = () => {
         spacing={3}
       >
         <Stack alignItems="center" spacing={4}>
+          <Box
+            sx={{
+              height: 52,
+              width: 52,
+              borderRadius: 1.5,
+            }}
+            p={1}
+          >
+            <img src={Logo} alt="GigaChat" />
+          </Box>
           <Stack
             sx={{
               width: "max-content",
@@ -210,7 +225,11 @@ const SideBar = () => {
                 >
                   <Stack
                     onClick={() => {
-                      navigate(getMenuPath(index));
+                      if (index === 2) {
+                        dispatch(LogoutUser());
+                      } else {
+                        navigate(getMenuPath(index));
+                      }
                     }}
                     sx={{ width: 100 }}
                     direction="row"

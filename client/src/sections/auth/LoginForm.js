@@ -4,6 +4,8 @@ import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormProvider, InputForm } from "../../components/hook-form";
+import { useDispatch } from "react-redux";
+import { LoginUser } from "../../redux/slices/auth";
 import {
   Alert,
   Button,
@@ -16,6 +18,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 const LoginForm = () => {
+  const dispacth = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
 
   const LoginShema = Yup.object().shape({
@@ -26,8 +29,8 @@ const LoginForm = () => {
   });
 
   const defaultValues = {
-    email: "test@test.ru",
-    password: "1qaz!QAZ",
+    email: "",
+    password: "",
   };
 
   const methods = useForm({
@@ -44,7 +47,7 @@ const LoginForm = () => {
 
   const onSubmit = async (data) => {
     try {
-      //submit data
+      dispacth(LoginUser(data));
     } catch (error) {
       console.log(error);
       reset();

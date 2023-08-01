@@ -1,12 +1,13 @@
 import React from "react";
-import { Box, Container, useTheme } from "@mui/material";
+import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
-
-const isAuth = true;
+import { Box, Container, useTheme } from "@mui/material";
 
 const MainLayout = () => {
+  const { isLoggedIn } = useSelector((state) => state.auth);
   const theme = useTheme();
-  if (isAuth) {
+
+  if (isLoggedIn) {
     return <Navigate to="/app" />;
   }
 
