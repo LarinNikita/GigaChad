@@ -162,7 +162,7 @@ export function VerifyEmail(formValues) {
   return async (dispatch, getState) => {
     await axios
       .post(
-        "/auth/verify",
+        "/auth/verified-otp",
         {
           ...formValues,
         },
@@ -174,6 +174,12 @@ export function VerifyEmail(formValues) {
       )
       .then(function (responce) {
         console.log(responce);
+        dispatch(
+          slice.actions.logIn({
+            isLoggedIn: true,
+            token: responce.data.token,
+          })
+        );
       })
       .catch((error) => {
         console.log(error);

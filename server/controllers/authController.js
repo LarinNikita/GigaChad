@@ -136,10 +136,11 @@ exports.login = async (req, res, next) => {
     !userDoc ||
     !(await userDoc.correctPassword(password, userDoc.password))
   ) {
-    return res.status(400).json({
+    res.status(400).json({
       status: "error",
       message: "Email or password is incorrect",
     });
+    return;
   }
 
   const token = signToken(userDoc._id);
