@@ -124,10 +124,11 @@ exports.login = async (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.status(400).json({
+    res.status(400).json({
       status: "error",
       message: "Both email and password are required",
     });
+    return;
   }
 
   const userDoc = await UserModel.findOne({ email: email }).select("+password");
