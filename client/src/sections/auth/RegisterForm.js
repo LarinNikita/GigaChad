@@ -3,18 +3,20 @@ import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormProvider, InputForm } from "../../components/hook-form";
+import { useDispatch } from "react-redux";
 import {
   Alert,
   Button,
   IconButton,
   InputAdornment,
-  Link,
   Stack,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { RegisterUser } from "../../redux/slices/auth";
 
 const RegisterForm = () => {
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
 
   const RegisterShema = Yup.object().shape({
@@ -27,10 +29,10 @@ const RegisterForm = () => {
   });
 
   const defaultValues = {
-    firstName: "Vasiya",
-    lastName: "Pupkin",
-    email: "test@test.ru",
-    password: "1qaz!QAZ",
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
   };
 
   const methods = useForm({
@@ -47,7 +49,7 @@ const RegisterForm = () => {
 
   const onSubmit = async (data) => {
     try {
-      //submit data
+      dispatch(RegisterUser(data));
     } catch (error) {
       console.log(error);
       reset();
