@@ -7,6 +7,7 @@ const { promisify } = require("util");
 const mailService = require("../services/mailer");
 const dotenv = require("dotenv");
 const otpHTML = require("../templates/Mail/OTP");
+const ReserPasswordHTML = require("../templates/Mail/ReserPassword");
 
 dotenv.config({ path: "./config.env" });
 
@@ -69,7 +70,7 @@ exports.sendOTP = async (req, res, next) => {
     recipient: user.email,
     subject: "OTP for GigaChat",
     // text: `Your OTP is ${new_otp}. This valid for 10 Mins.`,
-    html: otpHTML(user.firstName, new_otp)
+    html: otpHTML(user.firstName, new_otp),
   });
   // .then(() => {
 
@@ -123,10 +124,11 @@ exports.login = async (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.status(400).json({
+    res.status(400).json({
       status: "error",
       message: "Both email and password are required",
     });
+    return;
   }
 
   const userDoc = await UserModel.findOne({ email: email }).select("+password");
@@ -135,10 +137,11 @@ exports.login = async (req, res, next) => {
     !userDoc ||
     !(await userDoc.correctPassword(password, userDoc.password))
   ) {
-    return res.status(400).json({
+    res.status(400).json({
       status: "error",
       message: "Email or password is incorrect",
     });
+    return;
   }
 
   const token = signToken(userDoc._id);
@@ -203,8 +206,15 @@ exports.forgotPassword = async (req, res, next) => {
   await user.save({ validateBeforeSave: false });
 
   try {
-    const resetURL = `http://localhost:3000/auth/reset-password/?code=${resetToken}`;
+    const resetURL = `http://localhost:3000/auth/new-password/?token=${resetToken}`;
     console.log(resetURL);
+
+    mailService.sendEmail({
+      from: process.env.NODEMAILER_USER,
+      recipient: user.email,
+      subject: "Reset Password",
+      html: ReserPasswordHTML(user.firstName, resetURL),
+    });
 
     res.status(200).json({
       status: "success",
@@ -252,7 +262,7 @@ exports.resetPassword = async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
-    message: "Password Reseted Successfully'",
+    message: "Password Reseted Successfully",
     token,
   });
 };

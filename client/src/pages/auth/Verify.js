@@ -2,10 +2,10 @@ import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { Box, Link, Stack, Typography } from "@mui/material";
 import { CaretLeft } from "phosphor-react";
-import ResetPasswordForm from "../../sections/auth/ResetPasswordForm";
 import Logo from "../../assets/Images/Logo.ico";
+import VerifyForm from "../../sections/auth/VerifyForm";
 
-const ResetPassword = () => {
+const Verify = () => {
   return (
     <Stack spacing={2} sx={{ mb: 5, position: "relative" }}>
       <Stack direction="row" alignItems="center" spacing={1}>
@@ -13,15 +13,14 @@ const ResetPassword = () => {
           <img style={{ maxHeight: "36px" }} src={Logo} alt="GigaChat" />
         </Box>
         <Typography variant="h3" paragraph>
-          Forgot your Password?
+          Plese Verify OTP
         </Typography>
       </Stack>
       <Typography sx={{ color: "text.secondary", mb: 5 }}>
-        Please enter the email address associated with уоur account and Wе will
-        email уоu a link to reset уоur password.
+        Sent to email (test.ru)
       </Typography>
 
-      <ResetPasswordForm />
+      <VerifyForm/>
 
       <Link
         component={RouterLink}
@@ -42,4 +41,4 @@ const ResetPassword = () => {
   );
 };
 
-export default ResetPassword;
+export default Verify;
