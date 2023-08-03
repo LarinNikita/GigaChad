@@ -117,6 +117,7 @@ exports.verifiedOTP = async (req, res, next) => {
     status: "success",
     message: "OTP verified successfully",
     token,
+    user_id: user._id,
   });
 };
 
@@ -131,11 +132,11 @@ exports.login = async (req, res, next) => {
     return;
   }
 
-  const userDoc = await UserModel.findOne({ email: email }).select("+password");
+  const user = await UserModel.findOne({ email: email }).select("+password");
 
   if (
-    !userDoc ||
-    !(await userDoc.correctPassword(password, userDoc.password))
+    !user ||
+    !(await user.correctPassword(password, user.password))
   ) {
     res.status(400).json({
       status: "error",
@@ -144,12 +145,13 @@ exports.login = async (req, res, next) => {
     return;
   }
 
-  const token = signToken(userDoc._id);
+  const token = signToken(user._id);
 
   res.status(200).json({
     status: "success",
     message: "Logget in successfully",
     token,
+    user_id: user._id,
   });
 };
 
