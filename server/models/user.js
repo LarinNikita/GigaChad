@@ -63,7 +63,12 @@ const UserSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
+    status: {
+      type: String,
+      enum: ["Online", "Offline"],
+    },
   },
+
   {
     timestamps: true,
   }

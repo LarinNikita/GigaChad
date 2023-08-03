@@ -2,6 +2,7 @@ const app = require("./app");
 const http = require("http");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
+const path = require("path");
 
 dotenv.config({ path: "./config.env" });
 
@@ -48,7 +49,7 @@ io.on("connection", async (socket) => {
   console.log(`User connected ${socket_id}`);
 
   if (Boolean(user_id)) {
-    await User.findByIdAndUpdate(user_id, { socket_id });
+    await User.findByIdAndUpdate(user_id, { socket_id, status: "Online" });
   }
 
   socket.on("friend_request", async (data) => {
@@ -71,10 +72,10 @@ io.on("connection", async (socket) => {
     });
   });
 
-  socket.on("end", function () {
-    console.log("Closing connection");
-    socket.disconnect(0);
-  });
+  // socket.on("end", function () {
+  //   console.log("Closing connection");
+  //   socket.disconnect(0);
+  // });
 
   socket.on("accept_request", async (data) => {
     const request_doc = await FriendRequest.findById(data.request_id);
@@ -96,6 +97,28 @@ io.on("connection", async (socket) => {
     io.to(recipient.socket_id).emit("request_accepted", {
       message: "Friend Request Accepted",
     });
+  });
+
+  socket.on("text_message", async (data) => {
+    console.log("Received Message", data);
+  });
+
+  socket.on("file_message", async (data) => {
+    console.log("Received Message", data);
+
+    const fileExtension = path.extname(data.file.name);
+
+    const fileNme = `${Date.now()}_${Math.floor(
+      Math.random() * 10000
+    )}${fileExtension}`;
+  });
+
+  socket.on("end", async (data) => {
+    if (data.user_id) {
+      await UserModel.findByIdAndUpdate(data.user_id, { status: "Offline" });
+    }
+    console.log("Closing connection");
+    socket.disconnect(0);
   });
 });
 
