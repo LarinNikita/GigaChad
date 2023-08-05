@@ -14,6 +14,8 @@ const initialState = {
   users: [],
   friends: [],
   friendRequests: [],
+  chat_type: null,
+  room_id: null,
 };
 
 const slice = createSlice({
@@ -46,6 +48,11 @@ const slice = createSlice({
     },
     updateFriendRequest(state, action) {
       state.friendRequests = action.payload.friendRequests;
+    },
+
+    selectConversation(state, action) {
+      state.chat_type = "individual";
+      state.room_id = action.payload.room_id;
     },
   },
 });
@@ -90,11 +97,11 @@ export const closeSnackbar = () => async (dispatch, getState) => {
 export const FetchUsers = () => {
   return async (dispatch, getState) => {
     await axios
-      .get("user/get-users", {
+      .get("/user/get-users", {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${getState().auth.token}`,
         },
-        Authorization: `Bearer ${getState().auth.token}`,
       })
       .then((responce) => {
         console.log(responce);
@@ -109,11 +116,11 @@ export const FetchUsers = () => {
 export const FetchFriends = () => {
   return async (dispatch, getState) => {
     await axios
-      .get("user/get-friends", {
+      .get("/user/get-friends", {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${getState().auth.token}`,
         },
-        Authorization: `Bearer ${getState().auth.token}`,
       })
       .then((responce) => {
         console.log(responce);
@@ -128,11 +135,11 @@ export const FetchFriends = () => {
 export const FetchFriendRequest = () => {
   return async (dispatch, getState) => {
     await axios
-      .get("user/get-friends-request", {
+      .get("/user/get-friends-request", {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${getState().auth.token}`,
         },
-        Authorization: `Bearer ${getState().auth.token}`,
       })
       .then((responce) => {
         console.log(responce);
@@ -145,5 +152,11 @@ export const FetchFriendRequest = () => {
       .catch((error) => {
         console.log(error);
       });
+  };
+};
+
+export const SelectConversation = ({ room_id }) => {
+  return (dispatch, getState) => {
+    dispatch(slice.actions.selectConversation({ room_id }));
   };
 };
