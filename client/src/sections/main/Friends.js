@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Dialog, DialogContent, Stack, Tab, Tabs } from "@mui/material";
+import { Dialog, DialogContent, Slide, Stack, Tab, Tabs } from "@mui/material";
 import {
   FetchFriendRequest,
   FetchFriends,
@@ -12,21 +12,23 @@ import {
   UserComponent,
 } from "../../components/Friends";
 
+const Transition = forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 const UsersList = () => {
   const dispatch = useDispatch();
+
+  const { users } = useSelector((state) => state.app);
 
   useEffect(() => {
     dispatch(FetchUsers());
   }, []);
 
-  const { users } = useSelector((state) => state.app);
-
-  console.log(users)
-
   return (
     <>
       {users.map((el, index) => {
-        return <UserComponent key={el._id} {...el} />;
+        return <UserComponent key={index} {...el} />;
       })}
     </>
   );
@@ -35,16 +37,16 @@ const UsersList = () => {
 const FriendsList = () => {
   const dispatch = useDispatch();
 
+  const { friends } = useSelector((state) => state.app);
+
   useEffect(() => {
     dispatch(FetchFriends());
   }, []);
 
-  const { friends } = useSelector((state) => state.app);
-
   return (
     <>
       {friends.map((el, index) => {
-        return <FriendComponent key={el._id} {...el} />;
+        return <FriendComponent key={index} {...el} />;
       })}
     </>
   );
@@ -53,17 +55,17 @@ const FriendsList = () => {
 const FriendRequestsList = () => {
   const dispatch = useDispatch();
 
+  const { friendRequests } = useSelector((state) => state.app);
+
   useEffect(() => {
     dispatch(FetchFriendRequest());
   }, []);
-
-  const { friendRequests } = useSelector((state) => state.app);
 
   return (
     <>
       {friendRequests.map((el, index) => {
         return (
-          <FriendRequestComponent key={el._id} {...el.sender} id={el._id} />
+          <FriendRequestComponent key={index} {...el.sender} id={el._id} />
         );
       })}
     </>
@@ -73,17 +75,19 @@ const FriendRequestsList = () => {
 const Friends = ({ open, hadleClose }) => {
   const [value, setValue] = useState(0);
 
-  const hadleChange = (events, newValue) => {
+  const hadleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   return (
     <Dialog
       fullWidth
-      maxWidth="sm"
+      maxWidth="xs"
       open={open}
+      TransitionComponent={Transition}
       keepMounted
       onClose={hadleClose}
+      aria-describedby="alert-dialog-slide-description"
       sx={{ p: 4 }}
     >
       <Stack p={2} sx={{ width: "100%" }}>

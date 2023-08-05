@@ -13,6 +13,8 @@ import { Chat } from "phosphor-react";
 import StyledBadge from "./StyledBadge";
 import { socket } from "../socket";
 
+const user_id = window.localStorage.getItem("user_id");
+
 const StyledChatBox = styled(Box)(({ theme }) => ({
   "&:hover": {
     cursor: "pointer",
@@ -20,7 +22,6 @@ const StyledChatBox = styled(Box)(({ theme }) => ({
 }));
 
 const UserComponent = ({ firstName, lastName, _id, online, img }) => {
-  const user_id = window.localStorage.getItem("user_id");
   const theme = useTheme();
 
   const name = `${firstName} ${lastName}`;
@@ -53,13 +54,9 @@ const UserComponent = ({ firstName, lastName, _id, online, img }) => {
         <Stack direction="row" alignItems="center" spacing={2}>
           <Button
             onClick={() => {
-              socket.emit(
-                "new_friend_request",
-                { to: _id, from: user_id },
-                () => {
-                  alert("request sent");
-                }
-              );
+              socket.emit("friend_request", { to: _id, from: user_id }, () => {
+                alert("request sent");
+              });
             }}
           >
             Send Request
@@ -103,7 +100,11 @@ const FriendComponent = ({ firstName, lastName, _id, online, img }) => {
         <Stack direction="row" alignItems="center" spacing={2}>
           <IconButton
             onClick={() => {
-              //
+              // start new conversations
+              socket.emit("start_conversation", {
+                to: _id,
+                from: user_id,
+              });
             }}
           >
             <Chat />
@@ -154,9 +155,7 @@ const FriendRequestComponent = ({
         <Stack direction="row" alignItems="center" spacing={2}>
           <Button
             onClick={() => {
-              socket.emit("accept_request", { request_id: id }, () => {
-                alert("request sent");
-              });
+              socket.emit("accept_request", { request_id: id });
             }}
           >
             Accept Request

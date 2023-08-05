@@ -46,7 +46,7 @@ const slice = createSlice({
     updateFriends(state, action) {
       state.friends = action.payload.friends;
     },
-    updateFriendRequest(state, action) {
+    updateFriendRequests(state, action) {
       state.friendRequests = action.payload.friendRequests;
     },
 
@@ -103,9 +103,9 @@ export const FetchUsers = () => {
           Authorization: `Bearer ${getState().auth.token}`,
         },
       })
-      .then((responce) => {
-        console.log(responce);
-        dispatch(slice.actions.updateUsers({ users: responce.data.data }));
+      .then((response) => {
+        console.log(response);
+        dispatch(slice.actions.updateUsers({ users: response.data.data }));
       })
       .catch((error) => {
         console.log(error);
@@ -122,9 +122,9 @@ export const FetchFriends = () => {
           Authorization: `Bearer ${getState().auth.token}`,
         },
       })
-      .then((responce) => {
-        console.log(responce);
-        dispatch(slice.actions.updateFriends({ friends: responce.data.data }));
+      .then((response) => {
+        console.log(response);
+        dispatch(slice.actions.updateFriends({ friends: response.data.data }));
       })
       .catch((error) => {
         console.log(error);
@@ -141,11 +141,11 @@ export const FetchFriendRequest = () => {
           Authorization: `Bearer ${getState().auth.token}`,
         },
       })
-      .then((responce) => {
-        console.log(responce);
+      .then((response) => {
+        console.log(response);
         dispatch(
-          slice.actions.updateFriendRequest({
-            friendRequests: responce.data.data,
+          slice.actions.updateFriendRequests({
+            friendRequests: response.data.data,
           })
         );
       })

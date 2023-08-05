@@ -2,7 +2,7 @@ import { memo } from "react";
 // @mui
 import { useTheme } from "@mui/material/styles";
 import { Box } from "@mui/material";
-import nodata from "../Images/nodata.png"
+import nodata from "../Images/nodata.png";
 
 // ----------------------------------------------------------------------
 
@@ -329,7 +329,11 @@ function NoChat({ ...other }) {
     //   </svg>
     // </Box>
     <Box {...other}>
-      <img src={nodata} alt="no data" style={{ maxHeight: "360px", userSelect: "none" }}/>
+      <img
+        src={nodata}
+        alt="no data"
+        style={{ maxHeight: "360px", userSelect: "none" }}
+      />
     </Box>
   );
 }
